@@ -1,0 +1,51 @@
+@import url("default-dialog.css");
+div.planParent {
+	overflow: auto;
+}
+div.defaultHeight {
+	height: 300px;
+}
+table.plantable {
+	font-family:Arial, Helvetica, sans-serif;
+	table-layout: fixed;
+	width: 100%;
+	z-index: 1;
+	max-height: 100%;
+}
+table.plantable th {
+	color: #A1A19F;
+	font-style: oblique;
+}
+table.plantable tr{
+}
+table.plantable tr td {
+	
+	word-wrap: break-word;
+	height: 5em;
+	vertical-align: top;
+	text-align: left;
+}
+table.plantable tr td.iniactive {
+	color: #BDBBBC;
+}
+table.plantable tr td.active {
+	background-color:#E9EFF2;
+	color: #A1A19F;
+}
+table.plantable tr td span.cellDate {
+	font-size: 0.7em;
+	margin-left: .1em;
+}
+table.plantable tr td p.entry {
+	overflow: hidden;
+	background-color: #FFFFFF;
+	margin: 0;
+	font-size: 1em;
+	padding: 2px;
+	height: 4em;
+	border-left-style: outset;
+	border-bottom-style: solid;
+	border-bottom-color: #E2E2E2;
+	
+}
+

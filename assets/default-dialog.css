@@ -1,0 +1,28 @@
+#addPlanTextArea {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 310px;
+	height: 100px;
+}
+/*
+ #overlay {
+ position: absolute;
+ left: 0px;
+ top: 0px;
+ width:100%;
+ height:100%;
+ text-align:center;
+ z-index: 1000;
+ }*/
+
+div.daylyDialog {
+	border-style:outset;
+	background-color:#63839B;
+	text-align:center;
+	padding: 1em;
+	position: absolute;
+	left: 50%;
+	margin-left: -80px;
+	z-index: 2;
+}
