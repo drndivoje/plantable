@@ -145,7 +145,11 @@
 			cal_instance.dialog.onSaveClick = function(formEl) {
 				var form = $(formEl);
 				var entry = form.children('textarea').val();
-				$(cal_instance.activeCell).append($('<p class="entry">'+ entry +'</p>'));
+				if($(cal_instance.activeCell).children('p.entry').length){
+					$(cal_instance.activeCell).children('p.entry').append(entry);
+				}else{
+					$(cal_instance.activeCell).append($('<p class="entry">'+ entry +'</p>'));
+				}
 			};
 
 		});
