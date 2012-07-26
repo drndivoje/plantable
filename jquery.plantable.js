@@ -4,11 +4,11 @@
 		return date + ' ' + month + ' ' + year;
 	}
 
-	function createDialog(dialogId,parentEl) {
+	function createDialog(dialogId, parentEl) {
 		//create dialog element
 		var dialog = document.createElement("div");
 		dialog.id = dialogId;
-		dialog.setAttribute('class','daylyDialog');
+		dialog.setAttribute('class', 'daylyDialog');
 		var form = document.createElement("form");
 		form.id = 'addDayPlan';
 		var textArea = document.createElement('textarea');
@@ -55,6 +55,13 @@
 	ModalDialog.prototype.onSaveClick = function(form) {
 		//do something
 	};
+	ModalDialog.prototype.reset = function(content) {
+		if (content != undefined) {
+			$("#addPlanTextArea").val(content);
+		} else {
+			$("#addPlanTextArea").val("");
+		}
+	}
 	var Calendar = function(from, to) {
 		this.fromDate = from;
 		this.toDate = to;
@@ -65,7 +72,7 @@
 			postDays = 0;
 		this.prevDays = prevDays;
 		this.postDays = postDays;
-		this.days = (this.toDate.getTime() - this.fromDate.getTime()) / 86400000, this.daysInWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], this.months_names = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+		this.days = (this.toDate.getTime() - this.fromDate.getTime()) / 86400000, this.daysInWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 		return this;
 	};
 	Calendar.prototype = {
@@ -79,11 +86,18 @@
 			});
 		},
 		onClickCell : function(el) {
+			var entryEl = $(el).children('p.entry');
+			if (entryEl.length) {
+				var textEntry = entryEl.text();
+				this.dialog.reset(textEntry);
+			} else {
+				this.dialog.reset();
+			}
 			this.dialog.show();
 		},
 		render : function(el) {
-			this.dialog = createDialog('entryDialog',el);
-			
+			this.dialog = createDialog('entryDialog', el);
+
 			var tableEl = document.createElement('table'), weekEl = document.createElement("tr"), headerEl = document.createElement('thead'), daysInWeekEl = document.createElement('tr');
 			createCell = function(date, className) {
 				var dayCellEl = document.createElement('td'), dateEl = document.createElement('span');
@@ -126,8 +140,8 @@
 				}
 			}
 			el.append(tableEl);
-			el.css('z-index','1');
-			el.css('position','relative');
+			el.css('z-index', '1');
+			el.css('position', 'relative');
 		}
 	}
 	$.fn.calendar = function(options) {
@@ -145,10 +159,10 @@
 			cal_instance.dialog.onSaveClick = function(formEl) {
 				var form = $(formEl);
 				var entry = form.children('textarea').val();
-				if($(cal_instance.activeCell).children('p.entry').length){
-					$(cal_instance.activeCell).children('p.entry').append(entry);
-				}else{
-					$(cal_instance.activeCell).append($('<p class="entry">'+ entry +'</p>'));
+				if ($(cal_instance.activeCell).children('p.entry').length) {
+					$(cal_instance.activeCell).children('p.entry').text(entry);
+				} else {
+					$(cal_instance.activeCell).append($('<p class="entry">' + entry + '</p>'));
 				}
 			};
 

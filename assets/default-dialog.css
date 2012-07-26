@@ -17,12 +17,17 @@
  }*/
 
 div.daylyDialog {
-	border-style:outset;
-	background-color:#63839B;
-	text-align:center;
+	border-style: outset;
+	background-color: #BEBEBE;
+	text-align: center;
 	padding: 1em;
 	position: absolute;
 	left: 50%;
 	margin-left: -80px;
 	z-index: 2;
+}
+div.daylyDialog button {
+	color: #A1A1A0;
+	border: 1px solid #A1A1A0;
+	font-weight: bold;
 }

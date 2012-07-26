@@ -26,6 +26,7 @@ table.plantable tr td {
 	text-align: left;
 }
 table.plantable tr td.iniactive {
+	background-color:#D6D6D6;
 	color: #BDBBBC;
 }
 table.plantable tr td.active {
@@ -37,6 +38,7 @@ table.plantable tr td span.cellDate {
 	margin-left: .1em;
 }
 table.plantable tr td p.entry {
+	color:#000000;
 	overflow: hidden;
 	background-color: #FFFFFF;
 	margin: 0;
