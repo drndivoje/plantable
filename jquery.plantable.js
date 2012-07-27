@@ -1,4 +1,5 @@
 (function($) {
+
 	function formatDate(date) {
 		var m_names = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"), month = m_names[date.getMonth()], year = date.getFullYear(), date = date.getDate();
 		return date + ' ' + month + ' ' + year;
@@ -29,6 +30,9 @@
 		});
 	}
 
+	/*
+	 * Simple dialog for inserting plan for clicked day cell
+	 */
 	var ModalDialog = function(options) {
 		this.dialogEl = $(options.element);
 		this.saveBtn = $(options.saveBtn);
@@ -44,6 +48,9 @@
 		});
 		this.dialogEl.hide();
 	};
+	/*
+	 * Displaying dialog
+	 */
 	ModalDialog.prototype.show = function() {
 		var top = this.dialogEl.parent().scrollTop() + 10;
 		this.dialogEl.css('top', top + "px");
@@ -51,13 +58,20 @@
 		//set focus on textarea
 		$("#addPlanTextArea").focus();
 	};
-
+	/*
+	 * Closing dialog
+	 */
 	ModalDialog.prototype.close = function() {
 		this.dialogEl.hide();
 	};
 	ModalDialog.prototype.onSaveClick = function(form) {
 		//do something
 	};
+	/*
+	 * Updating content of textarea on dialog.
+	 * @param content content that will be added to textarea
+	 *
+	 */
 	ModalDialog.prototype.reset = function(content) {
 		if (content != undefined) {
 			$("#addPlanTextArea").val(content);
@@ -65,6 +79,12 @@
 			$("#addPlanTextArea").val("");
 		}
 	};
+	/*
+	 * Calendar object represents plan. Days are grouped in weeks. Every week start from Monday to Sunday.
+	 *
+	 * @param from start date
+	 * @param to end date
+	 */
 	var Calendar = function(from, to) {
 		this.fromDate = from;
 		this.toDate = to;
@@ -73,8 +93,11 @@
 			prevDays = 6;
 		if (toDay == 0)
 			postDays = 0;
+		//prevDays property is number of days fromMonday to start date in the first week of plan.
 		this.prevDays = prevDays;
+		//postdays property is number of day from end date to Sunday in the last week of plan
 		this.postDays = postDays;
+		//number of days from start to end date of plan
 		this.days = (this.toDate.getTime() - this.fromDate.getTime()) / 86400000, this.daysInWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 		return this;
 	};
@@ -147,7 +170,7 @@
 			el.css('position', 'relative');
 		}
 	}
-	$.fn.calendar = function(options) {
+	$.fn.plantable = function(options) {
 		var from = options.start;
 		var to = options.end;
 		var cal_instance = new Calendar(from, to);
