@@ -48,7 +48,10 @@
 		var top = this.dialogEl.parent().scrollTop() + 10;
 		this.dialogEl.css('top', top + "px");
 		this.dialogEl.show();
+		//set focus on textarea
+		$("#addPlanTextArea").focus();
 	};
+
 	ModalDialog.prototype.close = function() {
 		this.dialogEl.hide();
 	};
@@ -61,7 +64,7 @@
 		} else {
 			$("#addPlanTextArea").val("");
 		}
-	}
+	};
 	var Calendar = function(from, to) {
 		this.fromDate = from;
 		this.toDate = to;
