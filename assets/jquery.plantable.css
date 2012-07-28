@@ -19,7 +19,6 @@ table.plantable th {
 table.plantable tr{
 }
 table.plantable tr td {
-	
 	word-wrap: break-word;
 	height: 5em;
 	vertical-align: top;
@@ -44,7 +43,7 @@ table.plantable tr td p.entry {
 	margin: 0;
 	font-size: 1em;
 	padding: 2px;
-	height: 4em;
+	height: inherit;
 	border-left-style: outset;
 	border-bottom-style: solid;
 	border-bottom-color: #E2E2E2;
