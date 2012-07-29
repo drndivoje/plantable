@@ -1,5 +1,4 @@
 (function($) {
-
 	/*
 	 * Simple dialog for inserting plan for clicked day cell
 	 */
@@ -166,7 +165,6 @@
 
 			});
 			return JSON.stringify(jsonObj);
-
 		}
 	}
 	$.fn.plantable = function(options) {
@@ -189,6 +187,8 @@
 			cal_instance.dialog.onSaveClick = function(formEl) {
 				var form = $(formEl);
 				var entry = form.children('textarea').val();
+				//Insert breakdowns for every new row of textareastring
+				entry = entry.replace(/\n/g,'</br>')
 				if ($(cal_instance.activeCell).children('p.entry').length) {
 					$(cal_instance.activeCell).children('p.entry').text(entry);
 				} else {
@@ -196,7 +196,6 @@
 				}
 			};
 			$(this).data('plantable', cal_instance);
-
 		});
 	};
 	/*
