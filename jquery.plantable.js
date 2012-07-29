@@ -92,6 +92,7 @@
 			this.dialog.show();
 		},
 		render : function(el) {
+			this.element = el;
 			this.dialog = createDialog('entryDialog', el);
 
 			var tableEl = document.createElement('table'), weekEl = document.createElement("tr"), headerEl = document.createElement('thead'), daysInWeekEl = document.createElement('tr');
@@ -140,29 +141,38 @@
 			el.css('position', 'relative');
 
 		},
-		exportToJson : function(){
+		/*
+		 * Export to JSON string 
+		 */
+		exportToJSON : function() {
+			var elemnent = $(this.element);
 			var jsonObj = {
-				days : []
+				start : this.fromDate,
+				end : this.toDate,
+				duration : this.days,
+				planEntries : []
 			};
-			$('table.plantable tr td.active').each(function(){
-				var dateEl = $(this).children('span.cellDate'),
-					dateText = dateEl.text(),
-					entryEl = $(this).children('p.entry');
-				var cellObj = {
-					date:new Date(dateText)
-				};
-				if(entryEl.length){
+			//TODO: make it more elegant
+			elemnent.children('table.plantable').children('tr').children('td.active').each(function() {
+				var dateEl = $(this).children('span.cellDate'), dateText = dateEl.text(), entryEl = $(this).children('p.entry');
+
+				if (entryEl.length) {
+					var cellObj = {
+						date : new Date(dateText)
+					};
 					cellObj.entry = entryEl.text();
+					jsonObj.planEntries.push(cellObj);
 				}
-				jsonObj.days.push(cellObj);
+
 			});
-			return jsonObj;
+			return JSON.stringify(jsonObj);
+
 		}
 	}
 	$.fn.plantable = function(options) {
-		if(options === 'export'){
-			var calendar = $(this).data('plantable');
-			return calendar.exportToJson();
+		if (options === 'export') {
+			var cal_instance = $(this).data('plantable');
+			return cal_instance.exportToJSON();
 		}
 		var from = options.start;
 		var to = options.end;
@@ -185,7 +195,7 @@
 					$(cal_instance.activeCell).append($('<p class="entry">' + entry + '</p>'));
 				}
 			};
-			$(this).data('plantable',cal_instance);
+			$(this).data('plantable', cal_instance);
 
 		});
 	};
@@ -209,10 +219,10 @@
 		form.appendChild(textArea);
 		dialog.appendChild(form);
 		var saveBtn = document.createElement('button');
-		saveBtn.setAttribute('class','dialogBtn');
+		saveBtn.setAttribute('class', 'dialogBtn');
 		saveBtn.innerHTML = 'Save';
 		var closeBtn = document.createElement('button');
-		closeBtn.setAttribute('class','dialogBtn')
+		closeBtn.setAttribute('class', 'dialogBtn')
 		closeBtn.innerHTML = 'Close';
 		dialog.appendChild(saveBtn);
 		dialog.appendChild(closeBtn);

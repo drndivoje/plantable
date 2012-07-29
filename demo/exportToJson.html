@@ -1,0 +1,28 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="../assets/jquery.plantable.css">
+		<script src="../lib/jquery-1.7.1.min.js"></script>
+		<script src="../jquery.plantable.js"></script>
+		<style>
+		</style>
+	</head>
+	<body>
+		<h1>Click on Export to export plan to JSON String<h1>
+
+		<div id="plan"></div>
+		<button id="exportToJson">
+			Export
+		</button>
+		<script>
+			$("#plan").plantable({
+				start : new Date(2012, 5, 1),
+				end : new Date(2012, 6, 24),
+				rowWidth : 300
+			});
+			$('#exportToJson').click(function () {
+				
+			  alert ($("#plan").plantable('export'));
+			});
+		</script>
+	</body>
+</html>
