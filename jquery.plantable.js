@@ -1,35 +1,5 @@
 (function($) {
 
-	function formatDate(date) {
-		var m_names = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"), month = m_names[date.getMonth()], year = date.getFullYear(), date = date.getDate();
-		return date + ' ' + month + ' ' + year;
-	}
-
-	function createDialog(dialogId, parentEl) {
-		//create dialog element
-		var dialog = document.createElement("div");
-		dialog.id = dialogId;
-		dialog.setAttribute('class', 'daylyDialog');
-		var form = document.createElement("form");
-		form.id = 'addDayPlan';
-		var textArea = document.createElement('textarea');
-		textArea.id = 'addPlanTextArea';
-		form.appendChild(textArea);
-		dialog.appendChild(form);
-		var saveBtn = document.createElement('button');
-		saveBtn.innerHTML = 'Save';
-		var closeBtn = document.createElement('button');
-		closeBtn.innerHTML = 'Close';
-		dialog.appendChild(saveBtn);
-		dialog.appendChild(closeBtn);
-		$(parentEl).append(dialog);
-		return new ModalDialog({
-			element : dialog,
-			saveBtn : saveBtn,
-			closeBtn : closeBtn
-		});
-	}
-
 	/*
 	 * Simple dialog for inserting plan for clicked day cell
 	 */
@@ -168,12 +138,36 @@
 			el.append(tableEl);
 			el.css('z-index', '1');
 			el.css('position', 'relative');
+
+		},
+		exportToJson : function(){
+			var jsonObj = {
+				days : []
+			};
+			$('table.plantable tr td.active').each(function(){
+				var dateEl = $(this).children('span.cellDate'),
+					dateText = dateEl.text(),
+					entryEl = $(this).children('p.entry');
+				var cellObj = {
+					date:new Date(dateText)
+				};
+				if(entryEl.length){
+					cellObj.entry = entryEl.text();
+				}
+				jsonObj.days.push(cellObj);
+			});
+			return jsonObj;
 		}
 	}
 	$.fn.plantable = function(options) {
+		if(options === 'export'){
+			var calendar = $(this).data('plantable');
+			return calendar.exportToJson();
+		}
 		var from = options.start;
 		var to = options.end;
 		var cal_instance = new Calendar(from, to);
+
 		return this.each(function() {
 			$(this).addClass('planParent');
 			//calculate width and height
@@ -191,7 +185,43 @@
 					$(cal_instance.activeCell).append($('<p class="entry">' + entry + '</p>'));
 				}
 			};
+			$(this).data('plantable',cal_instance);
 
 		});
+	};
+	/*
+	 * Private functions
+	 */
+	function formatDate(date) {
+		var m_names = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"), month = m_names[date.getMonth()], year = date.getFullYear(), date = date.getDate();
+		return date + ' ' + month + ' ' + year;
 	}
+
+	function createDialog(dialogId, parentEl) {
+		//create dialog element
+		var dialog = document.createElement("div");
+		dialog.id = dialogId;
+		dialog.setAttribute('class', 'daylyDialog');
+		var form = document.createElement("form");
+		form.id = 'addDayPlan';
+		var textArea = document.createElement('textarea');
+		textArea.id = 'addPlanTextArea';
+		form.appendChild(textArea);
+		dialog.appendChild(form);
+		var saveBtn = document.createElement('button');
+		saveBtn.setAttribute('class','dialogBtn');
+		saveBtn.innerHTML = 'Save';
+		var closeBtn = document.createElement('button');
+		closeBtn.setAttribute('class','dialogBtn')
+		closeBtn.innerHTML = 'Close';
+		dialog.appendChild(saveBtn);
+		dialog.appendChild(closeBtn);
+		$(parentEl).append(dialog);
+		return new ModalDialog({
+			element : dialog,
+			saveBtn : saveBtn,
+			closeBtn : closeBtn
+		});
+	}
+
 })(jQuery);

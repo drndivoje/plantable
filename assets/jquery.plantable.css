@@ -44,6 +44,7 @@ table.plantable tr td p.entry {
 	font-size: 1em;
 	padding: 2px;
 	height: inherit;
+	border-width:1px;
 	border-left-style: outset;
 	border-bottom-style: solid;
 	border-bottom-color: #E2E2E2;
