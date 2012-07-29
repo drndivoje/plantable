@@ -23,7 +23,8 @@ The code below will create plan table from June 1st 2012 to July 24th 2012.
 ## Exporting plan to JSON String
 
 It is possible to export already created plan table to JSON string. 
-
+```html
 <script>
 	$("#planContainer").plantable("export");
 </script>
+```
