@@ -80,6 +80,16 @@
 				me.onClickCell(this);
 			});
 		},
+		formatCell: function(cellEl){
+		         var entryEl = cellEl.children[1];
+			 var isOverflowing = entryEl.clientHeight < entryEl.scrollHeight;
+			 if(isOverflowing){
+		        	$(entryEl).css('border-bottom-style','dotted');
+				$(entryEl).css(	'border-bottom-width','2px');	
+				$(entryEl).css(	'border-bottom-color','#000000');	
+			 }
+			
+		},
 		onClickCell : function(el) {
 			var entryEl = $(el).children('p.entry');
 			if (entryEl.length) {
@@ -190,10 +200,11 @@
 				//Insert breakdowns for every new row of textareastring
 				entry = entry.replace(/\n/g,'</br>')
 				if ($(cal_instance.activeCell).children('p.entry').length) {
-					$(cal_instance.activeCell).children('p.entry').text(entry);
+					$(cal_instance.activeCell).children('p.entry').append(entry);
 				} else {
 					$(cal_instance.activeCell).append($('<p class="entry">' + entry + '</p>'));
 				}
+				cal_instance.formatCell(cal_instance.activeCell);
 			};
 			$(this).data('plantable', cal_instance);
 		});
