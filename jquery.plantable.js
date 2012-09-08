@@ -187,6 +187,11 @@
 			cal_instance.dialog.onSaveClick = function(formEl) {
 				var form = $(formEl);
 				var entry = form.children('textarea').val();
+				if(entry === ""){
+					var cellEntryEl = $(cal_instance.activeCell).children('p.entry');
+					cellEntryEl.remove();
+					return;
+				}
 				//Insert breakdowns for every new row of textareastring
 				entry = entry.replace(/\n/g,'</br>')
 				if ($(cal_instance.activeCell).children('p.entry').length) {
