@@ -43,7 +43,7 @@
 	 */
 	ModalDialog.prototype.reset = function(content) {
 		if (content != undefined) {
-			$("#addPlanTextArea").val(content);
+			$("#addPlanTextArea").html(content);
 		} else {
 			$("#addPlanTextArea").val("");
 		}
@@ -83,7 +83,7 @@
 		onClickCell : function(el) {
 			var entryEl = $(el).children('p.entry');
 			if (entryEl.length) {
-				var textEntry = entryEl.text();
+				var textEntry = entryEl.html();
 				this.dialog.reset(textEntry);
 			} else {
 				this.dialog.reset();
@@ -190,7 +190,7 @@
 				//Insert breakdowns for every new row of textareastring
 				entry = entry.replace(/\n/g,'</br>')
 				if ($(cal_instance.activeCell).children('p.entry').length) {
-					$(cal_instance.activeCell).children('p.entry').text(entry);
+					$(cal_instance.activeCell).children('p.entry').html(entry);
 				} else {
 					$(cal_instance.activeCell).append($('<p class="entry">' + entry + '</p>'));
 				}
