@@ -1,6 +1,6 @@
 (function($) {
 	/*
-	 * Simple dialog for inserting plan for clicked day cell
+	 * Simple dialog for inserting dayly entry
 	 */
 	var ModalDialog = function(options) {
 		this.dialogEl = $(options.element);
@@ -51,10 +51,13 @@
 	}
 	/*
 	 * Updating content of textarea on dialog.
-	 * @param content content that will be added to textarea
+	 * @param options content that will be added to textarea
 	 *
 	 */
-	ModalDialog.prototype.reset = function(content) {
+	ModalDialog.prototype.reset = function(options) {
+		var content = options.text,
+			dateStr = options.headerText;
+		this.setHeader(dateStr);
 		if (content != undefined) {
 			$("#addPlanTextArea").html(content);
 		} else {
@@ -94,12 +97,14 @@
 			});
 		},
 		onClickCell : function(el) {
-			var entryEl = $(el).children('p.entry');
+			var entryEl = $(el).children('p.entry'),
+				dateEl = $(el).children('span.cellDate'),
+				dateString = dateEl.text();
 			if (entryEl.length) {
 				var textEntry = entryEl.html();
-				this.dialog.reset(textEntry);
+				this.dialog.reset({text:textEntry,headerText:dateString});
 			} else {
-				this.dialog.reset();
+				this.dialog.reset({headerText:dateString});
 			}
 			//disable scrollbar
 			this.element.css("overflow","hidden");
