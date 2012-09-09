@@ -19,7 +19,7 @@
 		this.dialogEl.hide();
 		this.mask.hide();
 	};
-	ModalDialog.prototype.setHeader = function(header){
+	ModalDialog.prototype.setHeader = function(header) {
 		this.dialogEl.children('div.dialogHeader').text(header);
 	}
 	/*
@@ -46,7 +46,7 @@
 	ModalDialog.prototype.onSaveClick = function(form) {
 		//do something
 	};
-	ModalDialog.prototype.onCloseClick = function(){
+	ModalDialog.prototype.onCloseClick = function() {
 		//do something
 	}
 	/*
@@ -55,8 +55,7 @@
 	 *
 	 */
 	ModalDialog.prototype.reset = function(options) {
-		var content = options.text,
-			dateStr = options.headerText;
+		var content = options.text, dateStr = options.headerText;
 		this.setHeader(dateStr);
 		if (content != undefined) {
 			$("#addPlanTextArea").html(content);
@@ -97,17 +96,21 @@
 			});
 		},
 		onClickCell : function(el) {
-			var entryEl = $(el).children('p.entry'),
-				dateEl = $(el).children('span.cellDate'),
-				dateString = dateEl.text();
+			var cell = $(el), entryEl = cell.children('p.entry'), dateEl = cell.children('span.cellDate'), dateString = dateEl.text();
 			if (entryEl.length) {
 				var textEntry = entryEl.html();
-				this.dialog.reset({text:textEntry,headerText:dateString});
+				this.dialog.reset({
+					text : textEntry,
+					headerText : dateString
+				});
 			} else {
-				this.dialog.reset({headerText:dateString});
+				this.dialog.reset({
+					headerText : dateString
+				});
 			}
+			cell.addClass("curentCell");
 			//disable scrollbar
-			this.element.css("overflow","hidden");
+			this.element.css("overflow", "hidden");
 			this.dialog.show();
 		},
 		render : function(el) {
@@ -140,7 +143,7 @@
 			//insering active days and weeks (between start and end date)
 			for (var i = 0; i <= this.days; i++) {
 				var dateTime = this.fromDate.getTime() + (86400000 * i), d = new Date(dateTime);
-				weekEl.appendChild(createCell(d, 'active'));
+				weekEl.appendChild(createCell(d, 'active'));	
 				//If it is Sunday close row div
 				if (d.getDay() == 0) {
 					tableEl.appendChild(weekEl);
@@ -161,7 +164,7 @@
 
 		},
 		/*
-		 * Export to JSON string 
+		 * Export to JSON string
 		 */
 		exportToJSON : function() {
 			var element = $(this.element);
@@ -205,26 +208,28 @@
 			}
 			cal_instance.init($(this));
 			cal_instance.dialog.onSaveClick = function(formEl) {
-				var form = $(formEl);
-				var entry = form.children('textarea').val();
-				if(entry === ""){
-					var cellEntryEl = $(cal_instance.activeCell).children('p.entry');
+				var form = $(formEl), entry = form.children('textarea').val();
+				activeCell = $(cal_instance.activeCell);
+				if (entry === "") {
+					var cellEntryEl = activeCell.children('p.entry');
 					cellEntryEl.remove();
 					return;
 				}
 				//Insert breakdowns for every new row of textareastring
-				entry = entry.replace(/\n/g,'</br>')
-				if ($(cal_instance.activeCell).children('p.entry').length) {
-					$(cal_instance.activeCell).children('p.entry').html(entry);
+				entry = entry.replace(/\n/g, '</br>')
+				if (activeCell.children('p.entry').length) {
+					activeCell.children('p.entry').html(entry);
 				} else {
-					$(cal_instance.activeCell).append($('<p class="entry">' + entry + '</p>'));
+					activeCell.append($('<p class="entry">' + entry + '</p>'));
 				}
+				activeCell.removeClass("curentCell");
 				//enable scrollbar
 				cal_instance.element.css('overflow', 'auto');
 			};
-			cal_instance.dialog.onCloseClick = function(){
+			cal_instance.dialog.onCloseClick = function() {
 				//enable scrollbar
 				cal_instance.element.css('overflow', 'auto');
+				$(cal_instance.activeCell).removeClass("curentCell");
 			};
 			$(this).data('plantable', cal_instance);
 		});
@@ -240,7 +245,7 @@
 	function createDialog(dialogId, parentEl) {
 		//create mask
 		var mask = document.createElement('div');
-		mask.setAttribute('class','dialogMask');
+		mask.setAttribute('class', 'dialogMask');
 		parentEl.append(mask);
 		//create dialog element
 		var dialog = document.createElement("div");

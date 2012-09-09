@@ -14,7 +14,7 @@ table.plantable {
 }
 table.plantable th {
 	color: #A1A19F;
-	font-style: oblique;
+	font-size: 0.7em;
 }
 table.plantable tr{
 }
@@ -31,6 +31,10 @@ table.plantable tr td.iniactive {
 table.plantable tr td.active {
 	background-color:#E9EFF2;
 	color: #A1A19F;
+}
+table.plantable tr td.curentCell{
+	border-color: #1990FF;
+	border-style: solid;
 }
 table.plantable tr td span.cellDate {
 	font-size: 0.7em;
