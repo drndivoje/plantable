@@ -6,6 +6,7 @@
 		this.dialogEl = $(options.element);
 		this.saveBtn = $(options.saveBtn);
 		this.closeBtn = $(options.closeBtn);
+		this.mask = $(options.mask);
 		var me = this;
 		this.saveBtn.click(function() {
 			var form = me.dialogEl.children('form')[0];
@@ -16,14 +17,21 @@
 			me.close();
 		});
 		this.dialogEl.hide();
+		this.mask.hide();
 	};
+	ModalDialog.prototype.setHeader = function(header){
+		this.dialogEl.children('div.dialogHeader').text(header);
+	}
 	/*
 	 * Displaying dialog
 	 */
 	ModalDialog.prototype.show = function() {
 		var top = this.dialogEl.parent().scrollTop() + 10;
+		//for postition mask and dialog
 		this.dialogEl.css('top', top + "px");
-		this.dialogEl.show();
+		this.mask.css('top', top + "px");
+		this.mask.show();
+		this.dialogEl.fadeIn();
 		//set focus on textarea
 		$("#addPlanTextArea").focus();
 	};
@@ -31,7 +39,8 @@
 	 * Closing dialog
 	 */
 	ModalDialog.prototype.close = function() {
-		this.dialogEl.hide();
+		this.mask.hide();
+		this.dialogEl.fadeOut();
 	};
 	ModalDialog.prototype.onSaveClick = function(form) {
 		//do something
@@ -88,6 +97,8 @@
 			} else {
 				this.dialog.reset();
 			}
+			//disable scrollbar
+			this.element.css("overflow","hidden");
 			this.dialog.show();
 		},
 		render : function(el) {
@@ -144,7 +155,7 @@
 		 * Export to JSON string 
 		 */
 		exportToJSON : function() {
-			var elemnent = $(this.element);
+			var element = $(this.element);
 			var jsonObj = {
 				start : this.fromDate,
 				end : this.toDate,
@@ -152,7 +163,7 @@
 				planEntries : []
 			};
 			//TODO: make it more elegant
-			elemnent.children('table.plantable').children('tr').children('td.active').each(function() {
+			element.children('table.plantable').children('tr').children('td.active').each(function() {
 				var dateEl = $(this).children('span.cellDate'), dateText = dateEl.text(), entryEl = $(this).children('p.entry');
 
 				if (entryEl.length) {
@@ -199,6 +210,8 @@
 				} else {
 					$(cal_instance.activeCell).append($('<p class="entry">' + entry + '</p>'));
 				}
+				//enable scrollbar
+				cal_instance.element.css('overflow', 'auto');
 			};
 			$(this).data('plantable', cal_instance);
 		});
@@ -212,10 +225,17 @@
 	}
 
 	function createDialog(dialogId, parentEl) {
+		//create mask
+		var mask = document.createElement('div');
+		mask.setAttribute('class','dialogMask');
+		parentEl.append(mask);
 		//create dialog element
 		var dialog = document.createElement("div");
 		dialog.id = dialogId;
 		dialog.setAttribute('class', 'daylyDialog');
+		var header = document.createElement('div');
+		header.setAttribute('class', 'dialogHeader');
+		dialog.appendChild(header);
 		var form = document.createElement("form");
 		form.id = 'addDayPlan';
 		var textArea = document.createElement('textarea');
@@ -234,7 +254,8 @@
 		return new ModalDialog({
 			element : dialog,
 			saveBtn : saveBtn,
-			closeBtn : closeBtn
+			closeBtn : closeBtn,
+			mask : mask
 		});
 	}
 
