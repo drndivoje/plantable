@@ -41,10 +41,14 @@
 	ModalDialog.prototype.close = function() {
 		this.mask.hide();
 		this.dialogEl.fadeOut();
+		this.onCloseClick();
 	};
 	ModalDialog.prototype.onSaveClick = function(form) {
 		//do something
 	};
+	ModalDialog.prototype.onCloseClick = function(){
+		//do something
+	}
 	/*
 	 * Updating content of textarea on dialog.
 	 * @param content content that will be added to textarea
@@ -210,6 +214,10 @@
 				} else {
 					$(cal_instance.activeCell).append($('<p class="entry">' + entry + '</p>'));
 				}
+				//enable scrollbar
+				cal_instance.element.css('overflow', 'auto');
+			};
+			cal_instance.dialog.onCloseClick = function(){
 				//enable scrollbar
 				cal_instance.element.css('overflow', 'auto');
 			};
